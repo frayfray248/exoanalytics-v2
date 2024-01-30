@@ -8,7 +8,7 @@ export const Flex = ({ children }: { children: React.ReactNode }) => {
 
 export const FlexRow = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div className='flex flex-row'>{children}</div>
+        <div className='flex flex-row flex-wrap'>{children}</div>
     )
 }
 

@@ -1,9 +1,9 @@
 // react
-import React from 'react'
+import React, { useState } from 'react'
 
 // components
 import PageLayout from '@/components/shared/PageLayout'
-import LineChart from '@/components/LineChart'
+import LineChart from '@/components/charts/LineChart'
 
 // api
 import api from '@/api/api'
@@ -14,6 +14,7 @@ import { PlanetsDiscoveredYear, TimeChartDataSet } from '@/types/types'
 const Page = async () => {
 
     const planetsDiscoveredYears : PlanetsDiscoveredYear[] = await api.getPlanetCountByYear()
+
 
     const labels = planetsDiscoveredYears.map((planetsDiscoveredYear : PlanetsDiscoveredYear) => planetsDiscoveredYear.year.toString())
     const datasets : TimeChartDataSet[] = [

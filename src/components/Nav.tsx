@@ -15,7 +15,7 @@ const Nav = () => {
     <Container>
         <FlexRow>
             <NavLink href='/time'>Time</NavLink>
-            <NavLink href='/'>Relationship</NavLink>
+            <NavLink href='/relationships'>Relationships</NavLink>
             <NavLink href='/'>Distributions</NavLink>
             <NavLink href='/'>Averages</NavLink>
             <NavLink href='/'>Individuals</NavLink>

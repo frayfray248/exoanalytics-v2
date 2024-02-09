@@ -1,6 +1,6 @@
 import React from 'react'
 
-import LineChart from './LineChart'
+import LineChart from './charts/LineChart'
 
 const Main = () => {
     return (

@@ -1,7 +1,7 @@
 'use client'
 
 // react
-import React from 'react'
+import React, { useState, useRef } from 'react'
 
 // chart js
 import {
@@ -33,6 +33,32 @@ import { TimeChartDataSet } from '@/types/types'
 
 const LineChart = ({ title, labels, datasets} : { title : string, labels : string[], datasets : TimeChartDataSet[]}) => {
 
+    const [range, setRange] = useState([0, labels.length - 1])
+    const [chartRef, setChartRef] = useState<HTMLCanvasElement | null>(null);
+
+    const onClick = (event : React.MouseEvent) => {
+
+        if (!chartRef) return
+
+        const rect = chartRef.getBoundingClientRect()
+        const width = rect.width
+        const height = rect.height
+        const left = rect.left
+        const top = rect.top
+        const mouseLeft = event.clientX
+        const mouseTop = event.clientY
+
+        if (mouseLeft < left || mouseLeft > left + width || mouseTop < top || mouseTop > top + height) return
+
+        const x = mouseLeft - left
+        const percX = x / width
+        const leftRange = range[1] * Math.round(percX)
+        const rightRange = range[1] - leftRange
+
+        
+
+    }
+
     const options = {
         responsive: true,
         plugins: {
@@ -47,7 +73,7 @@ const LineChart = ({ title, labels, datasets} : { title : string, labels : strin
     }
 
     const data = {
-        labels,
+        labels : labels.slice(range[0], range[1]),
         datasets : datasets.map((dataset : TimeChartDataSet, index) => ({
             ...dataset,
             borderColor: `hsl(${index * 360 / datasets.length}, 100%, 50%)`,
@@ -56,7 +82,7 @@ const LineChart = ({ title, labels, datasets} : { title : string, labels : strin
     }
 
     return (
-        <Line options={options} data={data} />
+        <Line options={options} data={data} onClick={onClick} ref={(ref) => ref && setChartRef(ref.canvas)}/>
     )
 }
 

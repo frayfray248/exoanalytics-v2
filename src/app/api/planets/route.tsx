@@ -4,13 +4,6 @@ import { type NextRequest, type NextResponse } from 'next/server'
 // api
 import { getPlanetData } from '@/api/api'
 
-// route config
-export const config = {
-    api: {
-      responseLimit: '4mb',
-    },
-  }
-
 export async function GET(request : NextRequest) {
     try {
 

@@ -36,6 +36,8 @@ const ScatterChart = ({ xAxisLabel, yAxisLabel, datasets } : { xAxisLabel : stri
 
 
     const options = {
+        responsive: true,
+        maintainAspectRatio: false,
         scales: {
             y: {
                 title: {

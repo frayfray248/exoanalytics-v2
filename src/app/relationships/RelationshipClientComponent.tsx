@@ -73,16 +73,15 @@ const RelationshipClientComponent = ({ planetColumns }: { planetColumns: PlanetC
     return (
         <PageLayout>
             <div className='w-full h-full flex flex-row'>
-                <div className='border flex-1'>
+                <div className='border p-2 w-176'>
                     <Container>
                         <Select items={planetColumns.map((planetColumn) => planetColumn.description)} onChange={handleXAxisChange} />
                         <Select items={planetColumns.map((planetColumn) => planetColumn.description)} onChange={handleYAxisChange} />
                     </Container>
                 </div>
-                <div className='border relative md:w-144 lg:w-160 xl:w-208 2xl:w-288'>
+                <div className='border relative flex justify-center flex-1'>
                     <ScatterChart xAxisLabel={selectedXAxisColumn || "label"} yAxisLabel={selectedYAxisColumn || "label"} datasets={datasets} />
                 </div>
-                <div className='border flex-1'></div>
             </div>
         </PageLayout>
     )

@@ -61,6 +61,7 @@ const LineChart = ({ title, labels, datasets} : { title : string, labels : strin
 
     const options = {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 position: 'top' as const,

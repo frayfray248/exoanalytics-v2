@@ -1,13 +1,13 @@
 import queries from "@/const/queries"
 
-import { PlanetsDiscoveredYear, PlanetColumn } from "@/types/types"
+import { PlanetsDiscoveredYear, PlanetColumn, DistributionChartData } from "@/types/types"
 
 const archiveFetch = async (query: string, format: string, revalidate?: number) => {
 
     const res = await fetch(`${process.env.EXOPLANET_ARCHIVE_URL}?query=${query}&format=${format}`, revalidate ? { next: { revalidate } } : {})
 
     if (!res.ok) {
-        throw new Error("Error fetching data from exoplanet archive")
+        throw new Error(`Error fetching data from exoplanet archive\n${res.status} ${res.statusText}`)
     }
 
     return await res.json()
@@ -61,9 +61,24 @@ export const getPlanetData = async (columns: string[]) => {
     return data
 }
 
-export default {
-    getPlanetCountByYear,
-    getPlanetColumnNames,
-    getPlanetNumberColumnNames
+export const getPlanetAggregateRows = async (column: string) => {
+
+    const query = queries.PLANET_AGGREGATE_ROWS_TEMPLATE.replace(/column_name/g, column)
+
+    console.log(`Fetching planet aggregate rows with query: ${query}`)
+
+    const data : DistributionChartData[]  = await archiveFetch(query, "json", 86400)
+
+    return data
+
 }
 
+const api = {
+    getPlanetCountByYear,
+    getPlanetColumnNames,
+    getPlanetNumberColumnNames,
+    getPlanetAggregateRows,
+}
+
+
+export default api

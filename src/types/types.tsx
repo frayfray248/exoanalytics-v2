@@ -8,6 +8,11 @@ export type ScatterChartDataSet = {
     data : { x : number, y : number }[]
 }
 
+export type DistributionChartData = {
+    label : string,
+    count : number,
+}
+
 export type PlanetsDiscoveredYear = {
     year : number,
     count : number,

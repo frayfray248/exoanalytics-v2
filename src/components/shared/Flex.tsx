@@ -18,8 +18,10 @@ export const FlexCol = ({ children }: { children: React.ReactNode }) => {
     )
 }
 
-export default {
+const components = {
     Flex,
     FlexRow,
     FlexCol
 }
+
+export default components

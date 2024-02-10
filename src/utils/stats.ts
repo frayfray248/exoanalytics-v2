@@ -45,4 +45,8 @@ const removeOutliersFromObjectArray = (array : {[key: string]: number }[], thres
 }
 
 
-export default { calculateMean, calculateStandardDeviation, removeOutliers, removeOutliersFromObjectArrayByKey, removeOutliersFromObjectArray }
+const stats = {
+    calculateMean, calculateStandardDeviation, removeOutliers, removeOutliersFromObjectArrayByKey, removeOutliersFromObjectArray 
+}
+
+export default stats

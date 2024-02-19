@@ -1,8 +1,26 @@
-import queries from "@/const/queries"
+// utils
+import QueryBuilder, { SelectColumn, Archive } from "@/utils/QueryBuilder"
+import { 
+    buildPlanetAggregateQuery,
+    buildPlanetCountByYearQuery
+ } from "@/utils/queries"
+import { chunkArray } from "@/utils/helpers"
 
-import { PlanetsDiscoveredYear, PlanetColumn, DistributionChartData } from "@/types/types"
+// types
+import {
+    PlanetsDiscoveredYear,
+    PlanetColumn,
+    DistributionChartData,
+    PlanetAggregate
+} from "@/types/types"
 
-const archiveFetch = async (query: string, format: string, revalidate?: number) => {
+const { Table, Column, ADQL } = Archive
+const { PS, Schema } = Column
+const { Numeric, DataType } = ADQL
+
+const archiveFetch = async (query: string, format: 'json', revalidate?: number) => {
+
+    console.log(`Fetching planet data with query: ${query}`)
 
     const res = await fetch(`${process.env.EXOPLANET_ARCHIVE_URL}?query=${query}&format=${format}`, revalidate ? { next: { revalidate } } : {})
 
@@ -17,32 +35,29 @@ const archiveFetch = async (query: string, format: string, revalidate?: number) 
 export const getPlanetCountByYear = async () => {
     'use server'
 
-    const data = await archiveFetch(queries.PLANET_COUNT_BY_YEAR, "json", 86400)
+    const query = buildPlanetCountByYearQuery()
 
-    const planetsDiscoveredYears: PlanetsDiscoveredYear[] = data.map(
-        (item: { disc_year: number, planet_count: number }) =>
-            ({ year: item.disc_year, count: item.planet_count }))
+    const planetsDiscoveredYears: PlanetsDiscoveredYear[] = await archiveFetch(query, "json", 86400)
 
     return planetsDiscoveredYears
 
 }
 
-export const getPlanetColumnNames = async () => {
-
-    const data = await archiveFetch(queries.PLANET_COLUMN_NAMES, "json", 86400)
-
-    return JSON.stringify(data)
-
-}
-
 export const getPlanetNumberColumnNames = async () => {
 
-    const data = await archiveFetch(queries.PLANET_NUMBER_COLUMN_NAMES, "json", 86400)
+    const query = new QueryBuilder()
+        .select([
+            { name: Schema.COLUMN_NAME, as: "name" },
+            { name: Schema.DESCRIPTION },
+        ])
+        .from(Table.SCHEMA)
+        .where()
+        .columnLike(Schema.TABLE_NAME, Table.PS)
+        .and()
+        .valuesIn(Schema.DATATYPE, [DataType.INT, DataType.DOUBLE])
+        .format()
 
-    const planetColumns: PlanetColumn[] = data.map(
-        (item: { column_name: string, description: string }) =>
-            ({ name: item.column_name, description: item.description })
-    )
+    const planetColumns: PlanetColumn[] = await archiveFetch(query, "json", 86400)
 
     return planetColumns
 
@@ -50,24 +65,58 @@ export const getPlanetNumberColumnNames = async () => {
 
 export const getPlanetData = async (columns: string[]) => {
 
-    const whereClause = columns.map((column) => `${column}+IS+NOT+NULL`).join("+AND+")
+    const query = new QueryBuilder()
+        .select(columns)
+        .from(Table.PS)
+        .where()
+        .columnNotNull(columns)
+        .format()
 
-    const query = `${queries.PLANET_DATA.replace("*", columns.join(","))}+WHERE+${whereClause}`
+    const planetData = await archiveFetch(query, "json")
 
-    console.log(`Fetching planet data with query: ${query}`)
-
-    const data = await archiveFetch(query, "json")
-
-    return data
+    return planetData
 }
 
-export const getPlanetAggregateRows = async (column: string) => {
+export const getPlanetAggregateData = async (columns : string[], func : Archive.ADQL.Numeric.Function) => {
 
-    const query = queries.PLANET_AGGREGATE_ROWS_TEMPLATE.replace(/column_name/g, column)
+    const chunks = chunkArray(columns, 50)
+    let planetAggregates: PlanetAggregate[] = []
 
-    console.log(`Fetching planet aggregate rows with query: ${query}`)
+    for (const chunk of chunks) {
 
-    const data : DistributionChartData[]  = await archiveFetch(query, "json", 86400)
+        const query = buildPlanetAggregateQuery(chunk, func)
+
+        const data = await archiveFetch(query, "json", 86400)
+
+        planetAggregates = planetAggregates.concat(Object.keys(data[0]).map((key, index) => ({
+            value: data[0][key]
+        })))
+
+    }
+
+    return planetAggregates
+
+}
+
+export const getPlanetAggregateDataGroups = async (column: string) => {
+
+    const query = new QueryBuilder()
+        .select([{
+            name: column,
+            as: "label",
+        },
+        {
+            name: Column.ALL,
+            as: "count",
+            function: Numeric.Function.COUNT,
+        }
+        ])
+        .from(Table.PS)
+        .groupBy(column)
+        .orderBy('count', 'DESC')
+        .format()
+
+    const data: DistributionChartData[] = await archiveFetch(query, "json", 86400)
 
     return data
 
@@ -75,9 +124,10 @@ export const getPlanetAggregateRows = async (column: string) => {
 
 const api = {
     getPlanetCountByYear,
-    getPlanetColumnNames,
     getPlanetNumberColumnNames,
-    getPlanetAggregateRows,
+    getPlanetData,
+    getPlanetAggregateData,
+    getPlanetAggregateDataGroups
 }
 
 

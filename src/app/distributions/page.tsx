@@ -22,7 +22,7 @@ const Page = async () => {
     ]
 
     const datasets : DistributionChartData[][] = await Promise.all(
-        items.map(async item => await api.getPlanetAggregateRows(item))
+        items.map(async item => await api.getPlanetAggregateDataGroups(item))
     )
 
     return (

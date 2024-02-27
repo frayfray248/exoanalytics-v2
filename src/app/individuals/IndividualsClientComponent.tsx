@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react'
 
 // components
 import PageLayout from '@/components/shared/PageLayout'
+import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell} from '@/components/shared/Table'
 
 const IndividualsClientComponent = ({ planetNames }: { planetNames: string[] }) => {
 
@@ -108,26 +109,26 @@ const IndividualsClientComponent = ({ planetNames }: { planetNames: string[] }) 
                 <div className='border relative flex flex-1 flex-wrap overflow-auto'>
                     {
                         selectedPlanet &&
-                        <table className='text-left'>
-                            <thead>
-                                <tr>
-                                    <th>Column</th>
-                                    <th>Value</th>
-                                </tr>
-                            </thead>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableHeaderCell>Column</TableHeaderCell>
+                                    <TableHeaderCell>Value</TableHeaderCell>
+                                </TableRow>
+                            </TableHead>
 
-                            <tbody>
+                            <TableBody>
                                 {Object.keys(selectedPlanet).map((key, index) => {
                                     return (
-                                        <tr key={index}>
-                                            <td>{key}</td>
-                                            <td>{selectedPlanet[key] || "null"}</td>
-                                        </tr>
+                                        <TableRow key={index}>
+                                            <TableCell>{key}</TableCell>
+                                            <TableCell>{selectedPlanet[key] || "null"}</TableCell>
+                                        </TableRow>
                                     )
                                 })}
-                            </tbody>
+                            </TableBody>
 
-                        </table>
+                        </Table>
                     }
                 </div>
             </div>

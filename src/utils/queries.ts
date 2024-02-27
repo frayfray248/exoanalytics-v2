@@ -4,22 +4,30 @@ const { Table, Column, ADQL } = Archive
 const { PS, Schema } = Column
 const { Numeric, DataType } = ADQL
 
-export const buildPlanetDataQuery = (
-    columns: string[],
-    as: string,
-    func: Archive.ADQL.Numeric.Function
-) => {
+export const buildPlanetDataQuery = (columns: string[], includeNulls: boolean, planetName?: string) => {
 
-    const selectColumns = columns.map(column => ({
-        name: column,
-        as: as,
-        function: func
-    })) as SelectColumn[]
+    const queryBuilder = new QueryBuilder()
 
-    return new QueryBuilder()
-        .select(selectColumns)
+    queryBuilder
+        .select(columns)
         .from(Table.PS)
-        .format()
+        .where()
+        .isDefault()
+
+    if (!includeNulls) {
+        queryBuilder
+            .and()
+            .columnNotNull(columns)
+    }
+
+    if (planetName) {
+        queryBuilder
+            .and()
+            .columnEquals(PS.PL_NAME, planetName)
+    }
+
+
+    return queryBuilder.format()
 }
 
 export const buildPlanetAggregateQuery = (columns: string[], func: Archive.ADQL.Numeric.Function, top?: number, offset?: number) => {
@@ -44,6 +52,10 @@ export const buildPlanetAggregateQuery = (columns: string[], func: Archive.ADQL.
         queryBuilder.offset(offset)
     }
 
+    queryBuilder
+        .where()
+        .isDefault()
+
     return queryBuilder.format()
 }
 
@@ -51,16 +63,33 @@ export const buildPlanetAggregateQuery = (columns: string[], func: Archive.ADQL.
 export const buildPlanetCountByYearQuery = () => {
 
     const query = new QueryBuilder()
-    .select([
-        { name: PS.DISC_YEAR, as: "year" },
-        { name: Column.ALL, function: Numeric.Function.COUNT, as: "count" }
-    ])
-    .from(Table.PS)
-    .where()
-    .columnNotNull(PS.DISC_YEAR)
-    .groupBy(PS.DISC_YEAR)
-    .orderBy(PS.DISC_YEAR, "ASC")
-    .format()
+        .select([
+            { name: PS.DISC_YEAR, as: "year" },
+            { name: Column.ALL, function: Numeric.Function.COUNT, as: "count" }
+        ])
+        .from(Table.PS)
+        .where()
+        .isDefault()
+        .and()
+        .columnNotNull(PS.DISC_YEAR)
+        .groupBy(PS.DISC_YEAR)
+        .orderBy(PS.DISC_YEAR, "ASC")
+        .format()
+
+    return query
+
+}
+
+export const buildPlanetNamesQuery = () => {
+
+    const query = new QueryBuilder()
+        .select([
+            PS.PL_NAME
+        ])
+        .from(Table.PS)
+        .where()
+        .isDefault()
+        .format()
 
     return query
 

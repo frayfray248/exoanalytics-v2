@@ -18,7 +18,7 @@ const Nav = () => {
             <NavLink href='/relationships'>Relationships</NavLink>
             <NavLink href='/distributions'>Distributions</NavLink>
             <NavLink href='/aggregate'>Aggregate</NavLink>
-            <NavLink href='/'>Individuals</NavLink>
+            <NavLink href='/individuals'>Individuals</NavLink>
         </FlexRow>
     </Container>
   )

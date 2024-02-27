@@ -8,7 +8,8 @@ export namespace Archive {
     export namespace Column {
         export const ALL = '*'
         export enum PS {
-            DISC_YEAR = 'disc_year'
+            DISC_YEAR = 'disc_year',
+            PL_NAME = 'pl_name'
         }
         export enum Schema {
             COLUMN_NAME = 'column_name',
@@ -104,6 +105,13 @@ class QueryBuilder {
 
     }
 
+    columnEquals(column: string, value: string) {
+
+        this.query += ` ${column} = '${value}'`
+        return this
+
+    }
+
 
     columnNotNull(column : string | string[]) {
 
@@ -112,6 +120,12 @@ class QueryBuilder {
         :
         ` ${column} IS NOT NULL`
 
+        return this
+    }
+
+    isDefault() {
+
+        this.query += " default_flag = 1"
         return this
     }
 

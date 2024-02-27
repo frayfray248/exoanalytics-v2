@@ -2,7 +2,9 @@
 import QueryBuilder, { SelectColumn, Archive } from "@/utils/QueryBuilder"
 import { 
     buildPlanetAggregateQuery,
-    buildPlanetCountByYearQuery
+    buildPlanetCountByYearQuery,
+    buildPlanetNamesQuery,
+    buildPlanetDataQuery
  } from "@/utils/queries"
 import { chunkArray } from "@/utils/helpers"
 
@@ -63,14 +65,9 @@ export const getPlanetNumberColumnNames = async () => {
 
 }
 
-export const getPlanetData = async (columns: string[]) => {
+export const getPlanetData = async (columns: string[], includeNulls : boolean, planetName? : string) => {
 
-    const query = new QueryBuilder()
-        .select(columns)
-        .from(Table.PS)
-        .where()
-        .columnNotNull(columns)
-        .format()
+    const query = buildPlanetDataQuery(columns, includeNulls, planetName)
 
     const planetData = await archiveFetch(query, "json")
 
@@ -122,12 +119,25 @@ export const getPlanetAggregateDataGroups = async (column: string) => {
 
 }
 
+export const getPlanetNames = async () => {
+
+    const query = buildPlanetNamesQuery()
+
+    const data : { pl_name : string }[] = await archiveFetch(query, "json", 86400)
+
+    const names = data.map(row => row.pl_name).sort((a, b) => a.localeCompare(b))
+
+    return names
+
+}
+
 const api = {
     getPlanetCountByYear,
     getPlanetNumberColumnNames,
     getPlanetData,
     getPlanetAggregateData,
-    getPlanetAggregateDataGroups
+    getPlanetAggregateDataGroups,
+    getPlanetNames
 }
 
 

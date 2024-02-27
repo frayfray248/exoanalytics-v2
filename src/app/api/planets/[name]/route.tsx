@@ -4,15 +4,13 @@ import { type NextRequest, type NextResponse } from 'next/server'
 // api
 import { getPlanetData } from '@/api/api'
 
-export async function GET(request : NextRequest) {
+export async function GET(request : NextRequest, { params } : { params: { name: string } }) {
     try {
 
-        const searchParams = request.nextUrl.searchParams
-        const columns = searchParams.get('columns')?.split(',') || ["pl_name"]
-        
-        const planets = await getPlanetData(columns)
-    
-        return Response.json(planets)
+        const planet = await getPlanetData(['*'], true, params.name)
+
+
+        return Response.json(planet, { status: 200 })
 
     } catch(error) {
 

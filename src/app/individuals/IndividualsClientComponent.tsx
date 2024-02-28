@@ -7,7 +7,15 @@ import React, { useState, useEffect } from 'react'
 import PageLayout from '@/components/shared/PageLayout'
 import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell} from '@/components/shared/Table'
 
-const IndividualsClientComponent = ({ planetNames }: { planetNames: string[] }) => {
+const IndividualsClientComponent = (
+    { 
+        planetNames,
+        columnDescriptions
+    }: { 
+        planetNames: string[],
+        columnDescriptions: { name: string, description: string }[]
+    }
+    ) => {
 
     const [selectedPlanet, setSelectedPlanet] = useState<{ [key: string]: string } | null>(null)
     const [displayPlanets, setdisplayPlanets] = useState<string[]>(planetNames)
@@ -34,8 +42,6 @@ const IndividualsClientComponent = ({ planetNames }: { planetNames: string[] }) 
 
 
     const handleClick = (index: number) => {
-
-
         ; (async () => {
             try {
 
@@ -121,7 +127,7 @@ const IndividualsClientComponent = ({ planetNames }: { planetNames: string[] }) 
                                 {Object.keys(selectedPlanet).map((key, index) => {
                                     return (
                                         <TableRow key={index}>
-                                            <TableCell>{key}</TableCell>
+                                            <TableCell>{columnDescriptions.find(column => column.name === key)?.description || key}</TableCell>
                                             <TableCell>{selectedPlanet[key] || "null"}</TableCell>
                                         </TableRow>
                                     )

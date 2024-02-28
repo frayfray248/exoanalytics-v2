@@ -42,7 +42,7 @@ export const TableHeaderCell = ({ children } : {children : React.ReactNode}) => 
 
 export const TableCell = ({ children } : {children : React.ReactNode}) => {
     return (
-        <td>
+        <td className='border-b'>
             {children}
         </td>
     )

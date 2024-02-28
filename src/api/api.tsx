@@ -4,7 +4,8 @@ import {
     buildPlanetAggregateQuery,
     buildPlanetCountByYearQuery,
     buildPlanetNamesQuery,
-    buildPlanetDataQuery
+    buildPlanetDataQuery,
+    buildPlanetAggregateGroupsQuery
  } from "@/utils/queries"
 import { chunkArray } from "@/utils/helpers"
 
@@ -42,6 +43,24 @@ export const getPlanetCountByYear = async () => {
     const planetsDiscoveredYears: PlanetsDiscoveredYear[] = await archiveFetch(query, "json", 86400)
 
     return planetsDiscoveredYears
+
+}
+
+export const getColumnDescriptions = async () => {
+
+    const query = new QueryBuilder()
+        .select([
+            { name: Schema.COLUMN_NAME, as: "name" },
+            { name: Schema.DESCRIPTION },
+        ])
+        .from(Table.SCHEMA)
+        .where()
+        .columnLike(Schema.TABLE_NAME, Table.PS)
+        .format()
+
+        const columnDescriptions: { name: string, description: string }[] = await archiveFetch(query, "json", 86400)
+
+        return columnDescriptions
 
 }
 
@@ -97,21 +116,7 @@ export const getPlanetAggregateData = async (columns : string[], func : Archive.
 
 export const getPlanetAggregateDataGroups = async (column: string) => {
 
-    const query = new QueryBuilder()
-        .select([{
-            name: column,
-            as: "label",
-        },
-        {
-            name: Column.ALL,
-            as: "count",
-            function: Numeric.Function.COUNT,
-        }
-        ])
-        .from(Table.PS)
-        .groupBy(column)
-        .orderBy('count', 'DESC')
-        .format()
+    const query = buildPlanetAggregateGroupsQuery(column)
 
     const data: DistributionChartData[] = await archiveFetch(query, "json", 86400)
 
@@ -137,7 +142,8 @@ const api = {
     getPlanetData,
     getPlanetAggregateData,
     getPlanetAggregateDataGroups,
-    getPlanetNames
+    getPlanetNames,
+    getColumnDescriptions
 }
 
 

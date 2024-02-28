@@ -59,6 +59,29 @@ export const buildPlanetAggregateQuery = (columns: string[], func: Archive.ADQL.
     return queryBuilder.format()
 }
 
+export const buildPlanetAggregateGroupsQuery = (column: string) => {
+
+    const query = new QueryBuilder()
+        .select([{
+            name: column,
+            as: "label",
+        },
+        {
+            name: Column.ALL,
+            as: "count",
+            function: Numeric.Function.COUNT,
+        }
+        ])
+        .from(Table.PS)
+        .where()
+        .isDefault()
+        .groupBy(column)
+        .orderBy('count', 'DESC')
+        .format()
+
+    return query
+}
+
 
 export const buildPlanetCountByYearQuery = () => {
 

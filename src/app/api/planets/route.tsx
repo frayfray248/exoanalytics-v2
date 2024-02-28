@@ -10,7 +10,7 @@ export async function GET(request : NextRequest) {
         const searchParams = request.nextUrl.searchParams
         const columns = searchParams.get('columns')?.split(',') || ["pl_name"]
         
-        const planets = await getPlanetData(columns)
+        const planets = await getPlanetData(columns, true)
     
         return Response.json(planets)
 

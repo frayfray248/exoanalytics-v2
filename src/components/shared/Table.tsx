@@ -2,7 +2,7 @@ import React from 'react'
 
 export const Table = ({ children } : {children : React.ReactNode}) => {
   return (
-    <table className='text-left relative border-separate border-spacing-0'>
+    <table className='text-left relative border-separate border-spacing-0 scroll-auto min-h-0 w-full'>
         {children}
     </table>
   )

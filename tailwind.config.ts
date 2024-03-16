@@ -25,6 +25,20 @@ const config: Config = {
                 '288' : '72rem',
                 '304' : '76rem',
             },
+            minHeight: {
+                '128' : '32rem',
+                '144' : '36rem',
+                '160' : '40rem',
+                '176' : '44rem',
+                '192' : '48rem',
+                '208' : '52rem',
+                '224' : '56rem',
+                '240' : '60rem',
+                '256' : '64rem',
+                '272' : '68rem',
+                '288' : '72rem',
+                '304' : '76rem',
+            },
             backgroundImage: {
                 "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
                 "gradient-conic":

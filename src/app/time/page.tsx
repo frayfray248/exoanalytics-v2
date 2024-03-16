@@ -31,12 +31,9 @@ const Page = async () => {
 
     return (
         <PageLayout>
-            <div className='w-full h-full flex flex-row'>
-                <div className='border flex-1 w-176'></div>
-                <div className='border relative flex justify-center flex-1'>
+                <div className='border relative flex justify-center flex-1 min-w-80 min-h-80'>
                     <LineChart title="foobar" labels={labels} datasets={datasets} />
                 </div>
-            </div>
         </PageLayout>
     )
 }

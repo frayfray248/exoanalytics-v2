@@ -1,8 +1,8 @@
 import React from 'react'
 
-export const Table = ({ children } : {children : React.ReactNode}) => {
+export const Table = ({ children, className } : {children : React.ReactNode, className? : string}) => {
   return (
-    <table className='text-left relative border-separate border-spacing-0 scroll-auto min-h-0 w-full'>
+    <table className={`text-left relative border-separate border-spacing-0 scroll-auto min-h-0 w-full ${className}`}>
         {children}
     </table>
   )

@@ -41,7 +41,7 @@ const DistributionsClientComponent = ({ items, datasets }: { items: string[], da
                         <Select items={chartNames} onChange={index => setSelectedChart(index)} />
                     </Container>
                 </div>
-                <div className='border relative flex justify-center flex-1 min-w-80 min-h-80'>
+                <div className='border relative flex justify-center flex-1 min-h-80'>
                     {chartComponents[selectedChart]}
                 </div>
         </PageLayout>

@@ -14,7 +14,7 @@ import { DistributionChartData } from '@/types/types'
 import Select from '@/components/shared/Select'
 import BarChart from '@/components/charts/BarChart'
 
-const DistributionsClientComponent = ({ items, datasets }: { items: string[], datasets: DistributionChartData[][] }) => {
+const DistributionsClientComponent = ({ columns, datasets }: { columns: { name: string, description: string }[], datasets: DistributionChartData[][] }) => {
 
     // state
     const [selectedItem, setSelectedItem] = useState<number>(0)
@@ -22,9 +22,9 @@ const DistributionsClientComponent = ({ items, datasets }: { items: string[], da
 
     // charts
     const chartComponents = [
-        <PieChart key={0} distributionDataSet={datasets[selectedItem]} label={items[selectedItem]} />,
-        <DoughnutChart key={1} distributionDataSet={datasets[selectedItem]} label={items[selectedItem]} />,
-        <BarChart key={2} distributionDataSet={datasets[selectedItem]} label={items[selectedItem]} />
+        <PieChart key={0} distributionDataSet={datasets[selectedItem]} label={columns[selectedItem].description} />,
+        <DoughnutChart key={1} distributionDataSet={datasets[selectedItem]} label={columns[selectedItem].description} />,
+        <BarChart key={2} distributionDataSet={datasets[selectedItem]} label={columns[selectedItem].description} />
     ]
 
     const chartNames = [
@@ -37,7 +37,7 @@ const DistributionsClientComponent = ({ items, datasets }: { items: string[], da
         <PageLayout>
                 <div className='border'>
                     <Container>
-                        <Select items={items} onChange={index => setSelectedItem(index)} />
+                        <Select items={columns.map(column => column.description)} onChange={index => setSelectedItem(index)} />
                         <Select items={chartNames} onChange={index => setSelectedChart(index)} />
                     </Container>
                 </div>

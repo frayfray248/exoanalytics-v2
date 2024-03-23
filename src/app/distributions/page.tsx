@@ -19,14 +19,24 @@ const Page = async () => {
         'disc_facility',
         'disc_telescope',
         'disc_instrument',
+        'pl_tranmidlim',
+        'disc_year',
+        
     ]
 
+    const columns = (await api.getColumnDescriptions()).filter(column => items.includes(column.name)).map(column => (
+        {
+            name: items[items.indexOf(column.name)],
+            description: column.description
+        }
+    ))
+
     const datasets : DistributionChartData[][] = await Promise.all(
-        items.map(async item => await api.getPlanetAggregateDataGroups(item))
+        columns.map(async column => await api.getPlanetAggregateDataGroups(column.name))
     )
 
     return (
-        <DistributionsClientComponent items={items} datasets={datasets} />
+        <DistributionsClientComponent columns={columns} datasets={datasets} />
     )
 }
 

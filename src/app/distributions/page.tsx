@@ -32,7 +32,12 @@ const Page = async () => {
     ))
 
     const datasets : DistributionChartData[][] = await Promise.all(
-        columns.map(async column => await api.getPlanetAggregateDataGroups(column.name))
+        columns.map(async column => {
+
+            const orderBy = column.name === 'disc_year' ? 'label' : 'count'
+            
+            return await api.getPlanetAggregateDataGroups(column.name, orderBy)
+        })
     )
 
     return (

@@ -59,7 +59,7 @@ export const buildPlanetAggregateQuery = (columns: string[], func: Archive.ADQL.
     return queryBuilder.format()
 }
 
-export const buildPlanetAggregateGroupsQuery = (column: string) => {
+export const buildPlanetAggregateGroupsQuery = (column: string, orderBy : string = 'count') => {
 
     const query = new QueryBuilder()
         .select([{
@@ -76,7 +76,7 @@ export const buildPlanetAggregateGroupsQuery = (column: string) => {
         .where()
         .isDefault()
         .groupBy(column)
-        .orderBy('count', 'DESC')
+        .orderBy(orderBy, 'DESC')
         .format()
 
     return query

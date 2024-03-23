@@ -114,9 +114,9 @@ export const getPlanetAggregateData = async (columns : string[], func : Archive.
 
 }
 
-export const getPlanetAggregateDataGroups = async (column: string) => {
+export const getPlanetAggregateDataGroups = async (column: string, orderBy : string = 'count') => {
 
-    const query = buildPlanetAggregateGroupsQuery(column)
+    const query = buildPlanetAggregateGroupsQuery(column, orderBy)
 
     const data: DistributionChartData[] = await archiveFetch(query, "json", 86400)
 

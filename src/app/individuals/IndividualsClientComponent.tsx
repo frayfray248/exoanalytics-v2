@@ -46,6 +46,8 @@ const IndividualsClientComponent = (
         ; (async () => {
             try {
 
+                setLoading(true)
+
                 const res = await fetch(`/api/planets/${displayPlanets[index]}`)
 
                 const planet: { [key: string]: string }[] = await res.json()
@@ -58,6 +60,11 @@ const IndividualsClientComponent = (
                     console.log(error.message)
                 }
 
+            }
+            finally {
+
+                setLoading(false)
+                
             }
         })()
 
@@ -85,61 +92,67 @@ const IndividualsClientComponent = (
 
     return (
         <PageLayout>
-                <div className='border px-2'>
-                    <div className='flex flex-col py-2'>
-                        <span>Search:</span>
-                        <input className='border' onChange={handleSearchInputChange} type='text' />
-                    </div>
-                    <div className='overflow-auto max-h-80' onScroll={planetListOnScroll}>
-                        <table className='text-left'>
-                            <thead>
-                                <tr>
-                                    <th>Planet</th>
-                                </tr>
-                            </thead>
-                            <tbody  >
-                                {displayPlanets.slice(planetListRange[0], planetListRange[1]).map((planet, index) => {
-                                    return (
-                                        <tr
-                                            className='hover:bg-gray-200 cursor-pointer'
-                                            key={index}
-                                            onClick={() => handleClick(index)}
-
-                                        >
-                                            <td>{planet}</td>
-                                        </tr>
-                                    )
-                                })}
-                            </tbody>
-                        </table>
-                    </div>
+            <div className='border px-2'>
+                <div className='flex flex-col py-2'>
+                    <span>Search:</span>
+                    <input className='border' onChange={handleSearchInputChange} type='text' />
                 </div>
+                <div className='overflow-auto max-h-80' onScroll={planetListOnScroll}>
+                    <table className='text-left'>
+                        <thead>
+                            <tr>
+                                <th>Planet</th>
+                            </tr>
+                        </thead>
+                        <tbody  >
+                            {displayPlanets.slice(planetListRange[0], planetListRange[1]).map((planet, index) => {
+                                return (
+                                    <tr
+                                        className='hover:bg-gray-200 cursor-pointer'
+                                        key={index}
+                                        onClick={() => handleClick(index)}
+
+                                    >
+                                        <td>{planet}</td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <div className='border relative flex flex-1 flex-wrap overflow-auto'>
                 {
-                    selectedPlanet ?
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableHeaderCell>Column</TableHeaderCell>
-                                    <TableHeaderCell>Value</TableHeaderCell>
-                                </TableRow>
-                            </TableHead>
 
-                            <TableBody>
-                                {Object.keys(selectedPlanet).map((key, index) => {
-                                    return (
-                                        <TableRow key={index}>
-                                            <TableCell>{columnDescriptions.find(column => column.name === key)?.description || key}</TableCell>
-                                            <TableCell>{selectedPlanet[key] || "null"}</TableCell>
-                                        </TableRow>
-                                    )
-                                })}
-                            </TableBody>
-                        </Table>
-                        :
+                    loading ?
                         <div className='flex justify-center items-center'>
-                            <span>Select a planet</span>
+                            <span>Loading...</span>
                         </div>
+                        :
+                        selectedPlanet ?
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableHeaderCell>Column</TableHeaderCell>
+                                        <TableHeaderCell>Value</TableHeaderCell>
+                                    </TableRow>
+                                </TableHead>
+
+                                <TableBody>
+                                    {Object.keys(selectedPlanet).map((key, index) => {
+                                        return (
+                                            <TableRow key={index}>
+                                                <TableCell>{columnDescriptions.find(column => column.name === key)?.description || key}</TableCell>
+                                                <TableCell>{selectedPlanet[key] || "null"}</TableCell>
+                                            </TableRow>
+                                        )
+                                    })}
+                                </TableBody>
+                            </Table>
+                            :
+                            <div className='flex justify-center items-center'>
+                                <span>Select a planet</span>
+                            </div>
                 }
             </div>
         </PageLayout>

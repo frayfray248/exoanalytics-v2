@@ -20,25 +20,33 @@ const RelationshipClientComponent = ({ planetColumns }: { planetColumns: PlanetC
     const [planetData, setPlanetData] = useState<{ [key: string]: number }[]>([])
     const [selectedXAxisColumn, setSelectedXAxisColumn] = useState<string | null>(planetColumns[0].name || null)
     const [selectedYAxisColumn, setSelectedYAxisColumn] = useState<string | null>(planetColumns[1].name || null)
+    const [loading, setLoading] = useState<boolean>(false)
 
     // effects
     useEffect(() => {
         ; (async () => {
             try {
 
+                setLoading(true)
+
                 const res = await fetch(`/api/planets?columns=${selectedXAxisColumn},${selectedYAxisColumn}`)
 
-                const data : {[key: string]: number }[] = await res.json()
-    
-                const newPlanetData : {[key: string]: number }[] = stats.removeOutliersFromObjectArray(data, 3)
-    
+                const data: { [key: string]: number }[] = await res.json()
+
+                const newPlanetData: { [key: string]: number }[] = stats.removeOutliersFromObjectArray(data, 3)
+
                 setPlanetData(newPlanetData)
 
-            } catch(error) {
+            } catch (error) {
 
                 if (error instanceof Error) {
                     console.log(error.message)
                 }
+
+            }
+            finally {
+
+                setLoading(false)
 
             }
         })()
@@ -46,22 +54,22 @@ const RelationshipClientComponent = ({ planetColumns }: { planetColumns: PlanetC
 
 
 
-    const handleXAxisChange = (index : number) => {
+    const handleXAxisChange = (index: number) => {
 
         setSelectedXAxisColumn(planetColumns[index].name)
 
     }
 
-    const handleYAxisChange = (index : number) => {
+    const handleYAxisChange = (index: number) => {
 
         setSelectedYAxisColumn(planetColumns[index].name)
 
     }
 
-    const datasets : ScatterChartDataSet[] = [
+    const datasets: ScatterChartDataSet[] = [
         {
             label: "Planets",
-            data: planetData.map((planet : any) => {
+            data: planetData.map((planet: any) => {
                 return {
                     x: selectedXAxisColumn ? planet[selectedXAxisColumn] : 0,
                     y: selectedYAxisColumn ? planet[selectedYAxisColumn] : 0
@@ -72,15 +80,23 @@ const RelationshipClientComponent = ({ planetColumns }: { planetColumns: PlanetC
 
     return (
         <PageLayout>
-                <div className='border p-2'>
-                    <Container>
-                        <Select items={planetColumns.map((planetColumn) => planetColumn.description)} onChange={handleXAxisChange} />
-                        <Select items={planetColumns.map((planetColumn) => planetColumn.description)} onChange={handleYAxisChange} />
-                    </Container>
-                </div>
-                <div className='border relative flex justify-center flex-1 min-h-80'>
-                    <ScatterChart xAxisLabel={selectedXAxisColumn || "label"} yAxisLabel={selectedYAxisColumn || "label"} datasets={datasets} />
-                </div>
+            <div className='border p-2'>
+                <Container>
+                    <Select items={planetColumns.map((planetColumn) => planetColumn.description)} onChange={handleXAxisChange} />
+                    <Select items={planetColumns.map((planetColumn) => planetColumn.description)} onChange={handleYAxisChange} />
+                </Container>
+            </div>
+            {
+                loading ?
+                    <div className='flex justify-center items-center h-80'>
+                        <p>Loading...</p>
+                    </div>
+                    :
+                    <div className='border relative flex justify-center flex-1 min-h-80'>
+                        <ScatterChart xAxisLabel={selectedXAxisColumn || "label"} yAxisLabel={selectedYAxisColumn || "label"} datasets={datasets} />
+                    </div>
+            }
+
         </PageLayout>
     )
 }

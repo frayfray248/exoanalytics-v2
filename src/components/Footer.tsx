@@ -5,7 +5,7 @@ import Container from './shared/Container'
 
 const Footer = () => {
   return (
-    <Container>
+    <Container className='border-t'>
         Created by Fraser
     </Container>
   )

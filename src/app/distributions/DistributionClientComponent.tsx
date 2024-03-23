@@ -35,17 +35,15 @@ const DistributionsClientComponent = ({ items, datasets }: { items: string[], da
 
     return (
         <PageLayout>
-            <div className=' w-full h-full flex flex-row '>
-                <div className='border w-176'>
+                <div className='border'>
                     <Container>
                         <Select items={items} onChange={index => setSelectedItem(index)} />
                         <Select items={chartNames} onChange={index => setSelectedChart(index)} />
                     </Container>
                 </div>
-                <div className='border relative flex justify-center flex-1'>
+                <div className='border relative flex justify-center flex-1 min-h-80'>
                     {chartComponents[selectedChart]}
                 </div>
-            </div>
         </PageLayout>
     )
 }

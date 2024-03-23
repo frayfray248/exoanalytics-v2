@@ -7,7 +7,7 @@ import Nav from './Nav'
 
 const Header = () => {
     return (
-        <Container>
+        <Container className='border-b'>
             <Title />
             <Nav />
         </Container>

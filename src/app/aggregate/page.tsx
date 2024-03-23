@@ -35,9 +35,7 @@ const page = async () => {
 
     return (
         <PageLayout>
-            <div className=' w-full h-full flex flex-row overflow-auto'>
-                <div>
-                    <Table>
+                    <Table className='border'>
                         <TableHead>
                             <TableRow>
                                 <TableHeaderCell>Column</TableHeaderCell>
@@ -62,8 +60,6 @@ const page = async () => {
                             }
                         </TableBody>
                     </Table>
-                </div>
-            </div>
         </PageLayout>
     )
 }

@@ -5,22 +5,23 @@ import React, { useState, useEffect } from 'react'
 
 // components
 import PageLayout from '@/components/shared/PageLayout'
-import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell} from '@/components/shared/Table'
+import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from '@/components/shared/Table'
 
 const IndividualsClientComponent = (
-    { 
+    {
         planetNames,
         columnDescriptions
-    }: { 
+    }: {
         planetNames: string[],
         columnDescriptions: { name: string, description: string }[]
     }
-    ) => {
+) => {
 
     const [selectedPlanet, setSelectedPlanet] = useState<{ [key: string]: string } | null>(null)
     const [displayPlanets, setdisplayPlanets] = useState<string[]>(planetNames)
     const [planetListRange, setPlanetListRange] = useState<[number, number]>([0, 100])
     const [searchInput, setSearchInput] = useState<string>('')
+    const [loading, setLoading] = useState<boolean>(false)
 
     useEffect(() => {
 
@@ -62,7 +63,7 @@ const IndividualsClientComponent = (
 
     }
 
-    
+
 
     const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -84,37 +85,38 @@ const IndividualsClientComponent = (
 
     return (
         <PageLayout>
-            <div className='w-full h-full flex flex-row'>
-                <div className='border p-2 overflow-auto' onScroll={planetListOnScroll}>
-                    <div className='flex flex-col'>
+                <div className='border px-2'>
+                    <div className='flex flex-col py-2'>
                         <span>Search:</span>
                         <input className='border' onChange={handleSearchInputChange} type='text' />
                     </div>
-                    <table className='text-left'>
-                        <thead>
-                            <tr>
-                                <th>Planet</th>
-                            </tr>
-                        </thead>
-                        <tbody  >
-                            {displayPlanets.slice(planetListRange[0], planetListRange[1]).map((planet, index) => {
-                                return (
-                                    <tr
-                                        className='hover:bg-gray-200 cursor-pointer'
-                                        key={index}
-                                        onClick={() => handleClick(index)}
+                    <div className='overflow-auto max-h-80' onScroll={planetListOnScroll}>
+                        <table className='text-left'>
+                            <thead>
+                                <tr>
+                                    <th>Planet</th>
+                                </tr>
+                            </thead>
+                            <tbody  >
+                                {displayPlanets.slice(planetListRange[0], planetListRange[1]).map((planet, index) => {
+                                    return (
+                                        <tr
+                                            className='hover:bg-gray-200 cursor-pointer'
+                                            key={index}
+                                            onClick={() => handleClick(index)}
 
-                                    >
-                                        <td>{planet}</td>
-                                    </tr>
-                                )
-                            })}
-                        </tbody>
-                    </table>
+                                        >
+                                            <td>{planet}</td>
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div className='border relative flex flex-1 flex-wrap overflow-auto'>
-                    {
-                        selectedPlanet &&
+            <div className='border relative flex flex-1 flex-wrap overflow-auto'>
+                {
+                    selectedPlanet ?
                         <Table>
                             <TableHead>
                                 <TableRow>
@@ -133,12 +135,13 @@ const IndividualsClientComponent = (
                                     )
                                 })}
                             </TableBody>
-
                         </Table>
-                    }
-                </div>
+                        :
+                        <div className='flex justify-center items-center'>
+                            <span>Select a planet</span>
+                        </div>
+                }
             </div>
-
         </PageLayout>
     )
 }

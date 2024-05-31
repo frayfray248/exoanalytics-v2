@@ -35,6 +35,43 @@ const page = async () => {
 
     return (
         <PageLayout>
+
+            <div className="flex flex-col min-h-96 max-w-6xl p-4 mx-auto text-sm lg:text-base">
+                <div className="border border-slate-400 m-4 p-2">
+                    <h1 className="text-xl font-bold">Aggregate Data</h1>
+                    <p className="text-sm">This page displays aggregate data of the numerical properties of exoplanets</p>
+                </div>
+                <div className="relative border border-slate-400 m-4 first-line:flex-1 max-h-96 overflow-auto">
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableHeaderCell>Column</TableHeaderCell>
+                                <TableHeaderCell>Average</TableHeaderCell>
+                                <TableHeaderCell>Max</TableHeaderCell>
+                                <TableHeaderCell>Min</TableHeaderCell>
+                                <TableHeaderCell>Sum</TableHeaderCell>
+                                <TableHeaderCell>Standard Deviation</TableHeaderCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {data.map((item, index) => (
+                                <TableRow key={index} className={index % 2 === 0? "bg-slate-200" : ""}>
+                                    <TableCell>{item.label}</TableCell>
+                                    <TableCell>{item.average}</TableCell>
+                                    <TableCell>{item.max}</TableCell>
+                                    <TableCell>{item.min}</TableCell>
+                                    <TableCell>{item.sum}</TableCell>
+                                    <TableCell>{item.stdev}</TableCell>
+                                </TableRow>
+                            ))
+                            }
+                        </TableBody>
+                    </Table>
+                </div>
+            </div>
+
+            {/* <div className="w-full h-full flex flex-row">
+                <div>
                     <Table className='border'>
                         <TableHead>
                             <TableRow>
@@ -60,6 +97,8 @@ const page = async () => {
                             }
                         </TableBody>
                     </Table>
+                </div>
+            </div> */}
         </PageLayout>
     )
 }

@@ -3,10 +3,6 @@
 @tailwind utilities;
 
 
-body {
-    height: 100vh;
-}
-
 .title-side-block::before {
     content: '';
     position: absolute;

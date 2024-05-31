@@ -6,7 +6,11 @@ export default async function Home() {
 
     return (
         <PageLayout>
-            main
+            <div className="flex flex-row flex-wrap p-4 h-96">
+                <div className="border border-black flex-1 m-4"></div>
+                <div className="border border-black flex-2 m-4"></div>
+                <div className="border border-black flex-1 m-4"></div>
+            </div>
         </PageLayout>
     )
 }

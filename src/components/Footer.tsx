@@ -4,11 +4,11 @@ import React from 'react'
 import Container from './shared/Container'
 
 const Footer = () => {
-  return (
-    <Container className='border-t'>
-        Created by Fraser
-    </Container>
-  )
+    return (
+        <footer className='bg-slate-300 p-4'>
+            Created by Fraser
+        </footer>
+    )
 }
 
 

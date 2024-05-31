@@ -35,15 +35,21 @@ const DistributionsClientComponent = ({ columns, datasets }: { columns: { name: 
 
     return (
         <PageLayout>
-                <div className='border'>
-                    <Container>
-                        <Select items={columns.map(column => column.description)} onChange={index => setSelectedItem(index)} />
-                        <Select items={chartNames} onChange={index => setSelectedChart(index)} />
-                    </Container>
+            <div className="flex flex-col min-h-96 max-w-6xl p-4 mx-auto text-sm lg:text-base">
+                <div className="border border-slate-400 m-4 p-2">
+                    <h1 className='text-2xl mb-2'>Distribution Chart</h1>
+                    <p>The chart below shows the distribution of exoplanets based on a one numerical property. You may change property and chart type using the dropdowns below.
+                    </p>
                 </div>
-                <div className='border relative flex justify-center flex-1 min-h-80'>
+                <div className="border border-slate-400 m-4 p-2">
+                    <Select label="Data:" items={columns.map(column => column.description)} onChange={index => setSelectedItem(index)} />
+                    <Select label="Chart:" items={chartNames} onChange={index => setSelectedChart(index)} />
+                </div>
+
+                <div className="relative border border-slate-400 m-4 p-2 flex-1 min-h-96">
                     {chartComponents[selectedChart]}
                 </div>
+            </div>
         </PageLayout>
     )
 }

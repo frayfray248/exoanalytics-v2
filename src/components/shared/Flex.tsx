@@ -1,20 +1,20 @@
 import React from 'react'
 
-export const Flex = ({ children }: { children: React.ReactNode }) => {
+export const Flex = ({ children, className="" }: { children: React.ReactNode, className? : string }) => {
     return (
-        <div className='flex'>{children}</div>
+        <div className={`flex ${className}`}>{children}</div>
     )
 }
 
-export const FlexRow = ({ children }: { children: React.ReactNode }) => {
+export const FlexRow = ({ children, className="" }: { children: React.ReactNode, className? : string }) => {
     return (
-        <div className='flex flex-row flex-wrap'>{children}</div>
+        <div className={`flex flex-row flex-wrap ${className}`}>{children}</div>
     )
 }
 
-export const FlexCol = ({ children }: { children: React.ReactNode }) => {
+export const FlexCol = ({ children, className="" }: { children: React.ReactNode, className? : string }) => {
     return (
-        <div className='flex flex-col'>{children}</div>
+        <div className={`flex flex-col ${className}`}>{children}</div>
     )
 }
 

@@ -33,6 +33,7 @@ const RelationshipClientComponent = ({ planetColumns }: { planetColumns: PlanetC
 
                 const data: { [key: string]: number }[] = await res.json()
 
+                // consider moving this calculation to the server
                 const newPlanetData: { [key: string]: number }[] = stats.removeOutliersFromObjectArray(data, 3)
 
                 setPlanetData(newPlanetData)
@@ -80,7 +81,29 @@ const RelationshipClientComponent = ({ planetColumns }: { planetColumns: PlanetC
 
     return (
         <PageLayout>
-            <div className='border p-2'>
+            <div className="flex flex-col min-h-96 max-w-6xl p-4 mx-auto text-sm lg:text-base">
+                <div className="border border-slate-400 m-4 p-2">
+                    <h1 className='text-2xl mb-2'>Relationship Chart</h1>
+                    <p>The chart below is a scatter chart that shows the relationship of two exoplanet numerical properties. Each dot on the chart represents a planet 
+                        and the position of the dot on the chart represents the value of the two properties for that planet. The chart can be used to identify 
+                        relationships between the two properties. You can select the properties to display on the chart using the dropdowns below.
+                    </p>
+                </div>
+                <div className="border border-slate-400 m-4 p-2">
+                    <Select label="X Axis:" items={planetColumns.map((planetColumn) => planetColumn.description)} onChange={handleXAxisChange} />
+                    <Select label="Y Axis:" items={planetColumns.map((planetColumn) => planetColumn.description)} onChange={handleYAxisChange} />
+                </div>
+                <div className="relative border border-slate-400 m-4 p-2 flex-1 min-h-96">
+                    {
+                        loading ?
+                            <p>Loading...</p>
+                            :
+                            <ScatterChart xAxisLabel={selectedXAxisColumn || "label"} yAxisLabel={selectedYAxisColumn || "label"} datasets={datasets} />
+                    }
+                </div>
+            </div>
+
+            {/* <div className='border p-2'>
                 <Container>
                     <Select items={planetColumns.map((planetColumn) => planetColumn.description)} onChange={handleXAxisChange} />
                     <Select items={planetColumns.map((planetColumn) => planetColumn.description)} onChange={handleYAxisChange} />
@@ -95,7 +118,7 @@ const RelationshipClientComponent = ({ planetColumns }: { planetColumns: PlanetC
                     <div className='border relative flex justify-center flex-1 min-h-80'>
                         <ScatterChart xAxisLabel={selectedXAxisColumn || "label"} yAxisLabel={selectedYAxisColumn || "label"} datasets={datasets} />
                     </div>
-            }
+            } */}
 
         </PageLayout>
     )

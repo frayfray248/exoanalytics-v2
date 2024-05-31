@@ -32,7 +32,7 @@ ChartJS.register(
     annotationPlugin
 )
 
-const ScatterChart = ({ xAxisLabel, yAxisLabel, datasets } : { xAxisLabel : string, yAxisLabel : string, datasets : ScatterChartDataSet[] }) => {
+const ScatterChart = ({ xAxisLabel, yAxisLabel, datasets }: { xAxisLabel: string, yAxisLabel: string, datasets: ScatterChartDataSet[] }) => {
 
 
     const options = {
@@ -57,9 +57,13 @@ const ScatterChart = ({ xAxisLabel, yAxisLabel, datasets } : { xAxisLabel : stri
     }
 
     const data = {
-        datasets: datasets
+        datasets: datasets.map((dataset: ScatterChartDataSet, index) => ({
+            ...dataset,
+            borderColor: `hsl(${(index * 100) % 360}, 100%, 50%)`,
+            backgroundColor: `hsl(${(index * 100) % 360}, 0%, 100%)`,
+        }))
     }
-    
+
     return (
         <Scatter data={data} options={options} />
     )

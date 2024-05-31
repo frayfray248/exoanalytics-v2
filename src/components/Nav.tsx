@@ -4,24 +4,24 @@ import React from 'react'
 import Container from './shared/Container'
 import { FlexRow } from './shared/Flex'
 
-const NavLink = ({ href, children } : { href : string, children : React.ReactNode}) => {
+const NavLink = ({ href, children }: { href: string, children: React.ReactNode }) => {
     return (
-        <a className='border-1 px-24 mr-1 my-1 py-1 bg-gray-100' href={href}>{children}</a>
+        <a className='border border-slate-400 rounded w-64 pl-2 text-xl hover:bg-slate-400 transition' href={href}>{children}</a>
     )
 }
 
 const Nav = () => {
-  return (
-    <Container>
-        <FlexRow>
-            <NavLink href='/time'>Time</NavLink>
-            <NavLink href='/relationships'>Relationships</NavLink>
-            <NavLink href='/distributions'>Distributions</NavLink>
-            <NavLink href='/aggregate'>Aggregate</NavLink>
-            <NavLink href='/individuals'>Individuals</NavLink>
-        </FlexRow>
-    </Container>
-  )
+    return (
+        <div className='pb-2'>
+            <FlexRow className='gap-2'>
+                <NavLink href='/time'>TIME</NavLink>
+                <NavLink href='/relationships'>RELATIONSHIPS</NavLink>
+                <NavLink href='/distributions'>DISTRIBUTIONS</NavLink>
+                <NavLink href='/aggregate'>AGGREGATE</NavLink>
+                <NavLink href='/individuals'>INDIVIDUALS</NavLink>
+            </FlexRow>
+        </div>
+    )
 }
 
 export default Nav

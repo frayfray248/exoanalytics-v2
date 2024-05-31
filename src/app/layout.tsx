@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const font = Roboto({ weight : '500',  subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Exoanalytics",
@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`flex flex-col min-h-screen overflow-y-auto relative ${font.className}`}>{children}</body>
     </html>
   );
 }

@@ -12,7 +12,7 @@ const Select = ({ items, onChange, label, className="" }: { items: string[], onC
                 return <option 
                 key={index} 
                 value={item}
-                >{`${item}\n${item}`}</option>
+                >{item}</option>
             })} 
         </select>
         </>

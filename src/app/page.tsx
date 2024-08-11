@@ -19,7 +19,7 @@ export default async function Home() {
                     </div>
                     <Image className="border-2 border-black mx-auto my-12" src={logo} alt="Exoanalytics" width={300} height={300} />
                     <p className="text-lg py-2">
-                        This website is a data visualizer for exoplanet data from NASA's <a className="text-blue-500" href="https://exoplanetarchive.ipac.caltech.edu/index.html" target="_blank">Exoplanet Archive</a>. The data is presented in various charts and tables, allowing you to explore relationships, aggregations, distributions, individual planet properties, and more. Start exploring the data by clicking on the tabs above.
+                        This website is a data visualizer for exoplanet data from NASA&apos;s <a className="text-blue-500" href="https://exoplanetarchive.ipac.caltech.edu/index.html" target="_blank">Exoplanet Archive</a>. The data is presented in various charts and tables, allowing you to explore relationships, aggregations, distributions, individual planet properties, and more. Start exploring the data by clicking on the tabs above.
                     </p>
                     <p className="text-lg py-2">
                         All data is fetched using the <a className="text-blue-500" href="https://exoplanetarchive.ipac.caltech.edu/docs/TAP/usingTAP.html" target="_blank">Table Access Protocol (TAP)</a> from the Exoplanet Archive. The data is then formatted on a backend server and sent to the frontend for visualization. Some data is cached for 24 hours to enhance performance.

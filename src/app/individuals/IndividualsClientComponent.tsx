@@ -35,7 +35,7 @@ const IndividualsClientComponent = (
 
         }
 
-    }, [searchInput])
+    }, [searchInput, planetNames])
 
     const resetPlanetListRange = () => {
         setPlanetListRange([0, 100])

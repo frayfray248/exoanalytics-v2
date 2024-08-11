@@ -6,7 +6,7 @@ import Container from './shared/Container'
 const Footer = () => {
     return (
         <footer className='bg-slate-300 p-4'>
-            Created by Fraser
+            <a href="https://fmacal.com" target='_blank'>Created by Fraser</a>
         </footer>
     )
 }
